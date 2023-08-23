@@ -10,10 +10,13 @@ To connect to the database, I had to follow the instruction in this page.
 https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-scaffold-example.html
 
 For the connection string, I had to keep this format.
+```
 "server=127.0.0.1;uid=root;pwd=**********;database=HTM;port=3300"
-
+```
 Therefore the whole command that I should execute at step 5 of the above tutorial was:
+```
  dotnet ef dbcontext scaffold "server=127.0.0.1;uid=root;pwd=*********;database=HTM;port=3300" MySql.EntityFrameworkCore -o HTM -f
+ ```
 
 
 After running this script, I could see that the folder HTM is made in the project tree.
@@ -32,7 +35,11 @@ From reverse engineering step, (scaffolding the database, challenge Nu.1) the Ht
 After running the code, I got two errors. 
 ### A. Error for identifying the database, Program.cs
 From the template, the database was referring to the old datacontext of the template. I had to change that. So, initializing db updated. using var 
+```
 db = new HTMbackend.HTM.HtmContext();
+```
 ### B. The interface for the datacontext, Program.cs
 I was getting a compile error, saying that while making the interface for the datacontext, it has no idea what type of data the constructor of this object should have. Therefore I had to add this line:
+```
 builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>();
+```
