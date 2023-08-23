@@ -1,4 +1,9 @@
+using HTMbackend;
+
 var builder = WebApplication.CreateBuilder(args);
+
+using var db = new BloggingContext();
+
 
 // Add services to the container.
 
