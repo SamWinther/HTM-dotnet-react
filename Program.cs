@@ -2,10 +2,13 @@ using HTMbackend;
 
 var builder = WebApplication.CreateBuilder(args);
 
-using var db = new BloggingContext();
+//using var db = new BloggingContext();
+using var db = new HTMbackend.HTM.HtmContext();
 
 
 // Add services to the container.
+builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>();
+//services.AddScoped<IBloggerRepository, BloggerRepository>;
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
