@@ -11,55 +11,55 @@ namespace HTMbackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RisksController : ControllerBase
+    public class RcmtypesController : ControllerBase
     {
         private readonly HtmContext _context;
 
-        public RisksController(HtmContext context)
+        public RcmtypesController(HtmContext context)
         {
             _context = context;
         }
 
-        // GET: api/Risks
+        // GET: api/Rcmtypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Risk>>> GetRisks()
+        public async Task<ActionResult<IEnumerable<Rcmtype>>> GetRcmtypes()
         {
-          if (_context.Risks == null)
+          if (_context.Rcmtypes == null)
           {
               return NotFound();
           }
-            return await _context.Risks.ToListAsync();
+            return await _context.Rcmtypes.ToListAsync();
         }
 
-        // GET: api/Risks/5
+        // GET: api/Rcmtypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Risk>> GetRisk(int id)
+        public async Task<ActionResult<Rcmtype>> GetRcmtype(int id)
         {
-          if (_context.Risks == null)
+          if (_context.Rcmtypes == null)
           {
               return NotFound();
           }
-            var risk = await _context.Risks.FindAsync(id);
+            var rcmtype = await _context.Rcmtypes.FindAsync(id);
 
-            if (risk == null)
+            if (rcmtype == null)
             {
                 return NotFound();
             }
 
-            return risk;
+            return rcmtype;
         }
 
-        // PUT: api/Risks/5
+        // PUT: api/Rcmtypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRisk(int id, Risk risk)
+        public async Task<IActionResult> PutRcmtype(int id, Rcmtype rcmtype)
         {
-            if (id != risk.Id)
+            if (id != rcmtype.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(risk).State = EntityState.Modified;
+            _context.Entry(rcmtype).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +67,7 @@ namespace HTMbackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RiskExists(id))
+                if (!RcmtypeExists(id))
                 {
                     return NotFound();
                 }
@@ -80,44 +80,44 @@ namespace HTMbackend.Controllers
             return NoContent();
         }
 
-        // POST: api/Risks
+        // POST: api/Rcmtypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Risk>> PostRisk(Risk risk)
+        public async Task<ActionResult<Rcmtype>> PostRcmtype(Rcmtype rcmtype)
         {
-          if (_context.Risks == null)
+          if (_context.Rcmtypes == null)
           {
-              return Problem("Entity set 'HtmContext.Risks'  is null.");
+              return Problem("Entity set 'HtmContext.Rcmtypes'  is null.");
           }
-            _context.Risks.Add(risk);
+            _context.Rcmtypes.Add(rcmtype);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRisk", new { id = risk.Id }, risk);
+            return CreatedAtAction("GetRcmtype", new { id = rcmtype.Id }, rcmtype);
         }
 
-        // DELETE: api/Risks/5
+        // DELETE: api/Rcmtypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRisk(int id)
+        public async Task<IActionResult> DeleteRcmtype(int id)
         {
-            if (_context.Risks == null)
+            if (_context.Rcmtypes == null)
             {
                 return NotFound();
             }
-            var risk = await _context.Risks.FindAsync(id);
-            if (risk == null)
+            var rcmtype = await _context.Rcmtypes.FindAsync(id);
+            if (rcmtype == null)
             {
                 return NotFound();
             }
 
-            _context.Risks.Remove(risk);
+            _context.Rcmtypes.Remove(rcmtype);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RiskExists(int id)
+        private bool RcmtypeExists(int id)
         {
-            return (_context.Risks?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Rcmtypes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

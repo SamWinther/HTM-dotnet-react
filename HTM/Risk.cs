@@ -34,4 +34,6 @@ public partial class Risk
     public int RiskPast { get; set; }
 
     public byte[]? Complete { get; set; }
+
+    public virtual ICollection<Rcm2risk> Rcm2risks { get; set; } = new List<Rcm2risk>();
 }

@@ -6,60 +6,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HTMbackend.HTM;
+using System.Configuration;
 
 namespace HTMbackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RisksController : ControllerBase
+    public class Rcm2riskController : ControllerBase
     {
         private readonly HtmContext _context;
 
-        public RisksController(HtmContext context)
+        public Rcm2riskController(HtmContext context)
         {
             _context = context;
         }
 
-        // GET: api/Risks
+        // GET: api/Rcm2risk
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Risk>>> GetRisks()
+        public async Task<ActionResult<IEnumerable<Rcm2risk>>> GetRcm2risks()
         {
-          if (_context.Risks == null)
-          {
+            if (_context.Rcm2risks == null)
+            {
               return NotFound();
-          }
-            return await _context.Risks.ToListAsync();
+            }
+            return await _context.Rcm2risks.ToListAsync();
         }
 
-        // GET: api/Risks/5
+        // GET: api/Rcm2risk/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Risk>> GetRisk(int id)
+        public async Task<ActionResult<Rcm2risk>> GetRcm2risk(int id)
         {
-          if (_context.Risks == null)
+          if (_context.Rcm2risks == null)
           {
               return NotFound();
           }
-            var risk = await _context.Risks.FindAsync(id);
+            var rcm2risk = await _context.Rcm2risks.FindAsync(id);
 
-            if (risk == null)
+            if (rcm2risk == null)
             {
                 return NotFound();
             }
 
-            return risk;
+            return rcm2risk;
         }
 
-        // PUT: api/Risks/5
+        // PUT: api/Rcm2risk/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRisk(int id, Risk risk)
+        public async Task<IActionResult> PutRcm2risk(int id, Rcm2risk rcm2risk)
         {
-            if (id != risk.Id)
+            if (id != rcm2risk.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(risk).State = EntityState.Modified;
+            _context.Entry(rcm2risk).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +68,7 @@ namespace HTMbackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RiskExists(id))
+                if (!Rcm2riskExists(id))
                 {
                     return NotFound();
                 }
@@ -80,44 +81,44 @@ namespace HTMbackend.Controllers
             return NoContent();
         }
 
-        // POST: api/Risks
+        // POST: api/Rcm2risk
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Risk>> PostRisk(Risk risk)
+        public async Task<ActionResult<Rcm2risk>> PostRcm2risk(Rcm2risk rcm2risk)
         {
-          if (_context.Risks == null)
+          if (_context.Rcm2risks == null)
           {
-              return Problem("Entity set 'HtmContext.Risks'  is null.");
+              return Problem("Entity set 'HtmContext.Rcm2risks'  is null.");
           }
-            _context.Risks.Add(risk);
+            _context.Rcm2risks.Add(rcm2risk);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRisk", new { id = risk.Id }, risk);
+            return CreatedAtAction("GetRcm2risk", new { id = rcm2risk.Id }, rcm2risk);
         }
 
-        // DELETE: api/Risks/5
+        // DELETE: api/Rcm2risk/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRisk(int id)
+        public async Task<IActionResult> DeleteRcm2risk(int id)
         {
-            if (_context.Risks == null)
+            if (_context.Rcm2risks == null)
             {
                 return NotFound();
             }
-            var risk = await _context.Risks.FindAsync(id);
-            if (risk == null)
+            var rcm2risk = await _context.Rcm2risks.FindAsync(id);
+            if (rcm2risk == null)
             {
                 return NotFound();
             }
 
-            _context.Risks.Remove(risk);
+            _context.Rcm2risks.Remove(rcm2risk);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RiskExists(int id)
+        private bool Rcm2riskExists(int id)
         {
-            return (_context.Risks?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Rcm2risks?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

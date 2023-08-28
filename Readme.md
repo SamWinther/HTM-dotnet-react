@@ -43,3 +43,30 @@ I was getting a compile error, saying that while making the interface for the da
 ```
 builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>();
 ```
+
+## 3. Moving the database information to the AppSettings.json file
+I could finally move the database credentials to the appsettings.json file. The implementation is in file HtmContext.cs.
+Here, I first had to add a property _configuration with the type of interface IConfiguration
+```
+protected readonly IConfiguration _configuration;
+```
+Then in the constructor, I had to initialize it. The constructor method is overloaded in this class. (different constructors exist for different cases of initialization)
+I had to add two overload constructor.
+case1, when only config file is present.
+```
+    public HtmContext(IConfiguration configuration) : this()
+    {
+        _configuration = configuration;
+    }
+```
+case2, when there is an option parameter together with the configuration.
+```
+    public HtmContext(DbContextOptions<HtmContext> options, IConfiguration configuration)
+        : this(options)
+    {
+        _configuration = configuration;
+    }
+```
+
+As you can see, I have repeated the section ```_configuration = configuration;``` and have violated the DRY principle but I was not sure how can I handle such a case.
+And at the end, I had to add ```using System.Configuration;``` at the header.

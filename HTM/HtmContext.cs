@@ -1,18 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace HTMbackend.HTM;
 
 public partial class HtmContext : DbContext
 {
+    protected readonly IConfiguration _configuration;
     public HtmContext()
     {
+        //Console.WriteLine("Original");
+    }
+
+    public HtmContext(IConfiguration configuration) : this()
+    {
+        //Console.WriteLine("Second");
+        _configuration = configuration;
     }
 
     public HtmContext(DbContextOptions<HtmContext> options)
         : base(options)
     {
+        //Console.WriteLine("third");
+    }
+
+    public HtmContext(DbContextOptions<HtmContext> options, IConfiguration configuration)
+        : this(options)
+    {
+        //Console.WriteLine("forth");
+        _configuration = configuration;
     }
 
     public virtual DbSet<Rcm> Rcms { get; set; }
@@ -25,7 +42,7 @@ public partial class HtmContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("server=127.0.0.1;User ID=root;Password=newpassword;Database=HTM;port=3300");
+        => optionsBuilder.UseMySQL(_configuration.GetValue<string>("ConnectionString:myDB1"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,22 +73,23 @@ public partial class HtmContext : DbContext
 
         modelBuilder.Entity<Rcm2risk>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("rcm2risk");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("rcm2risk");
 
             entity.HasIndex(e => e.RcmId, "rcmID");
 
             entity.HasIndex(e => e.RiskId, "riskID");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.RcmId).HasColumnName("rcmID");
             entity.Property(e => e.RiskId).HasColumnName("riskID");
 
-            entity.HasOne(d => d.Rcm).WithMany()
+            entity.HasOne(d => d.Rcm).WithMany(p => p.Rcm2risks)
                 .HasForeignKey(d => d.RcmId)
                 .HasConstraintName("rcm2risk_ibfk_1");
 
-            entity.HasOne(d => d.Risk).WithMany()
+            entity.HasOne(d => d.Risk).WithMany(p => p.Rcm2risks)
                 .HasForeignKey(d => d.RiskId)
                 .HasConstraintName("rcm2risk_ibfk_2");
         });

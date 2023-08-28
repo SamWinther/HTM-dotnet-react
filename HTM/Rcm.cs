@@ -17,5 +17,7 @@ public partial class Rcm
 
     public string VerOfEff { get; set; } = null!;
 
+    public virtual ICollection<Rcm2risk> Rcm2risks { get; set; } = new List<Rcm2risk>();
+
     public virtual Rcmtype RcmtypeNavigation { get; set; } = null!;
 }
