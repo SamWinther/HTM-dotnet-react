@@ -60,6 +60,7 @@ BenchmarkDotNet.Artifacts/
 # .NET
 project.lock.json
 appsettings.json
+appsettings.Development.json
 project.fragment.lock.json
 artifacts/
 

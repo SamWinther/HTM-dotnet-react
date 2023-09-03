@@ -23,8 +23,9 @@ namespace HTMbackend.Controllers
         // GET: api/Risks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Risk>>> GetRisks()
+        //public async Task<ActionResult<Risk>> GetRisk(int id)
         {
-          if (_context.Risks == null)
+            if (_context.Risks == null)
           {
               return NotFound();
           }
@@ -54,6 +55,7 @@ namespace HTMbackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRisk(int id, Risk risk)
         {
+            Console.WriteLine("Hello from PUTTTTT");
             if (id != risk.Id)
             {
                 return BadRequest();
@@ -115,9 +117,23 @@ namespace HTMbackend.Controllers
             return NoContent();
         }
 
+        // GET: api/RisksFind/keyword
+        [HttpGet("find/{keyword}")]
+        public List<HTMbackend.HTM.Risk> find(int keyword)
+        {
+            var riskWithWord2 = _context.Risks.Where(r=>r.Scenario.Contains("user")).ToList();
+
+            //if (riskWithWord2 == null)
+            //{
+            //    throw new Exception("this is riskFind error");
+            //}
+
+            return riskWithWord2;
+        }
+
         private bool RiskExists(int id)
         {
             return (_context.Risks?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        }        
     }
 }

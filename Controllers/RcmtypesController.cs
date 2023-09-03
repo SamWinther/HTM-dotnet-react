@@ -119,5 +119,23 @@ namespace HTMbackend.Controllers
         {
             return (_context.Rcmtypes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        //get related data
+        [HttpGet("Alaki")]
+        public async Task<ActionResult<Rcmtype>> Alaki(string? searchWord)
+        {
+            if (_context.Rcmtypes == null)
+            {
+                return NotFound();
+            }
+            var rcmtype = await _context.Rcmtypes.FindAsync(2);
+
+            if (rcmtype == null)
+            {
+                return NotFound();
+            }
+
+            return rcmtype;
+        }
     }
 }

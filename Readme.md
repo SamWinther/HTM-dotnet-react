@@ -70,3 +70,13 @@ case2, when there is an option parameter together with the configuration.
 
 As you can see, I have repeated the section ```_configuration = configuration;``` and have violated the DRY principle but I was not sure how can I handle such a case.
 And at the end, I had to add ```using System.Configuration;``` at the header.
+
+## 4. Making a query based on a condition
+In MySQL, it is easy to make a query like this.
+```
+SELECT * FROM risk WHERE scenario like "%user%";
+```
+I wanted to make a similar query in one of my API controllers. The problem was type conversion. I had to make sure the return type of the family is right. So when I define the function, I should state that this function returns a list of Risk.
+And in order to convert the query results to a list, I needed to use ```ToList()``` at the end of the query. Therefore, the whole command for getting the data is:
+```var riskWithWord2 = _context.Risks.Where(r=>r.Scenario.Contains("user")).ToList();```
+For the next practice, I will try to get queries from a joint table.
