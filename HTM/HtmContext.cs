@@ -1,35 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
 namespace HTMbackend.HTM;
 
 public partial class HtmContext : DbContext
 {
-    protected readonly IConfiguration _configuration;
     public HtmContext()
     {
-        //Console.WriteLine("Original");
-    }
-
-    public HtmContext(IConfiguration configuration) : this()
-    {
-        //Console.WriteLine("Second");
-        _configuration = configuration;
     }
 
     public HtmContext(DbContextOptions<HtmContext> options)
         : base(options)
     {
-        //Console.WriteLine("third");
-    }
-
-    public HtmContext(DbContextOptions<HtmContext> options, IConfiguration configuration)
-        : this(options)
-    {
-        //Console.WriteLine("forth");
-        _configuration = configuration;
     }
 
     public virtual DbSet<Rcm> Rcms { get; set; }
@@ -42,7 +25,7 @@ public partial class HtmContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL(_configuration.GetValue<string>("ConnectionString:myDB1"));
+        => optionsBuilder.UseMySQL("server=127.0.0.1;uid=root;pwd=k#y1Hhu6#8E6;database=HTM;port=3300");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

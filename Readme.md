@@ -3,7 +3,7 @@ This is my first serious dotnet project.
 In this project, I am going to make an app for making HTM. For more information about HTM contact me.
 # This Readme file
 In this file, I am going to write my notes, for different parts of the project.
-The first serious challenge that I faced was to connect my backend to my currently made database. Since it is easier for me to make the database in the SQL environment, I have made the database there and I had a hard time to connect to it. I have used MySQL as my server.
+The notes are usually described as a challnge that I have faced, something that I wanted to deploy but I did not know how. After I solve the puzzle, I make a note to describe the question that U have faced, and the solution that I could find.
 # My Challenges
 ## 1. Scaffolding from a current MySQL database
 To connect to the database, I had to follow the instruction in this page.
@@ -71,7 +71,7 @@ case2, when there is an option parameter together with the configuration.
 As you can see, I have repeated the section ```_configuration = configuration;``` and have violated the DRY principle but I was not sure how can I handle such a case.
 And at the end, I had to add ```using System.Configuration;``` at the header.
 
-## 4. Making a query based on a condition
+## 4. Making a custom query based on a condition or from a joint table
 In MySQL, it is easy to make a query like this.
 ```
 SELECT * FROM risk WHERE scenario like "%user%";
