@@ -1,4 +1,5 @@
 using HTMbackend;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ using var db = new HTMbackend.HTM.HtmContext();
 
 // Add services to the container.
 builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>();
+
 //services.AddScoped<IBloggerRepository, BloggerRepository>;
 
 builder.Services.AddControllers();

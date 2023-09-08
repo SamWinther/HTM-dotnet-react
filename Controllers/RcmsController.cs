@@ -24,11 +24,39 @@ namespace HTMbackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Rcm>>> GetRcms()
         {
-          if (_context.Rcms == null)
-          {
-              return NotFound();
-          }
-            return await _context.Rcms.ToListAsync();
+            if (_context.Rcms == null)
+            {
+                return NotFound();
+            }
+            //return await _context.Rcms.ToListAsync();
+            //alternative
+            var query = from Rcm in _context.Rcms select new { Rcm };
+            //alternative
+            //var query = from Rcm in _context.Set<Rcm>() select new {Rcm};
+            var list = query.Select(x => x.Rcm).ToList();
+            return list;
+
+        }
+
+        // GET: api/Rcms
+        [HttpGet("linq")]
+        public IQueryable<RcmDTO> GetRcms_linq()
+        //public List<RcmDTO> GetRcms_linq()
+        {
+            if (_context.Rcms == null)
+            {
+                Console.WriteLine("Not found");
+            }
+            var query = from Rcm in _context.Set<Rcm>() join Rcmtype in _context.Set<Rcmtype>() on Rcm.Rcmtype equals Rcmtype.Id select new RcmDTO {
+                Rcmtype = Rcmtype.Type,
+                Rcmtext = Rcm.Rcmtext,
+                NewRiskFromRcm = (Rcm.NewRiskFromRcm) ? "Yes": "No",
+                Implement = Rcm.Implement,
+                VerOfEff = Rcm.VerOfEff
+            };
+            //var list = query.ToList();
+            Console.WriteLine("Ow. it is working.");
+            return query;
         }
 
         // GET: api/Rcms/5
@@ -115,6 +143,19 @@ namespace HTMbackend.Controllers
             return NoContent();
         }
 
+        // GET: api/RCM/RCMwithType/5
+        //[HttpGet("/RCMwithType/{Id}")]
+        //public List<HTMbackend.HTM.Rcm> RiskWithRCMs(int riskId)
+        //{
+        //    var RCMwithType = _context.Rcms.Include(Rcm=> Rcm.RcmtypeNavigation).ToList();
+
+        //    //if (RCMwithType == null)
+        //    //{
+        //    //    throw new Exception("this is riskFind error");
+        //    //}
+
+        //    return RCMwithType;
+        //}
         private bool RcmExists(int id)
         {
             return (_context.Rcms?.Any(e => e.Id == id)).GetValueOrDefault();

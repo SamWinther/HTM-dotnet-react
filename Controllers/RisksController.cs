@@ -118,8 +118,8 @@ namespace HTMbackend.Controllers
         }
 
         // GET: api/RisksFind/keyword
-        [HttpGet("find/{keyword}")]
-        public List<HTMbackend.HTM.Risk> find(string keyword)
+        [HttpGet("findinScenario/{keyword}")]
+        public List<HTMbackend.HTM.Risk> FindinScenario(string keyword)
         {
             var riskWithWord2 = _context.Risks.Where(r=>r.Scenario.Contains(keyword)).ToList();
 
@@ -132,18 +132,18 @@ namespace HTMbackend.Controllers
         }
 
         // GET: api/Risks/riskwithRCM/5
-        //[HttpGet("/riskWithRCM/{riskId}")]
-        //public List<HTMbackend.HTM.Risk> riskWithRCM(int riskId)
-        //{
-        //    var riskWithWord2 = _context.Risks.Include(r => r.Rcm2risks).Where(r => r.Id == riskId).ToList();
+        [HttpGet("/riskWithRCMs/{riskId}")]
+        public List<HTMbackend.HTM.Risk> RiskWithRCMs(int riskId)
+        {
+            var riskWithWord2 = _context.Risks.Include(risk => risk.Rcm2risks).ToList();
 
-        //    //if (riskWithWord2 == null)
-        //    //{
-        //    //    throw new Exception("this is riskFind error");
-        //    //}
+            //if (riskWithWord2 == null)
+            //{
+            //    throw new Exception("this is riskFind error");
+            //}
 
-        //    return riskWithWord2;
-        //}
+            return riskWithWord2;
+        }
 
         private bool RiskExists(int id)
         {

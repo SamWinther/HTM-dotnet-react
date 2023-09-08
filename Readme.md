@@ -80,3 +80,7 @@ I wanted to make a similar query in one of my API controllers. The problem was t
 And in order to convert the query results to a list, I needed to use ```ToList()``` at the end of the query. Therefore, the whole command for getting the data is:
 ```var riskWithWord2 = _context.Risks.Where(r=>r.Scenario.Contains("user")).ToList();```
 For the next practice, I will try to get queries from a joint table.
+
+## 5. Joining two tables and driving results from the joint table
+This was an annoying challenge. I could use Linq query to join two tables of RCM and RCMtype. The annoying part was to find a format for the output because now the result is not neither RCM nor RcmType. It is a combination of both.
+The solution was to define a new class, RcmDTO. DTO stands for Data Transfer Object. This object is used for combining the data from the two table and removing unnacessary parts like RCMid.
