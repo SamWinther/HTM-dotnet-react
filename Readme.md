@@ -84,3 +84,13 @@ For the next practice, I will try to get queries from a joint table.
 ## 5. Joining two tables and driving results from the joint table
 This was an annoying challenge. I could use Linq query to join two tables of RCM and RCMtype. The annoying part was to find a format for the output because now the result is not neither RCM nor RcmType. It is a combination of both.
 The solution was to define a new class, RcmDTO. DTO stands for Data Transfer Object. This object is used for combining the data from the two table and removing unnacessary parts like RCMid.
+
+## 6. Deploy (migrate) the app MySQL database on Azure
+The database is transferred to Azure. I used Azure mySQL service. The currnet data from the currnet database is migrated to the Azure mySQL server using mysqldump. To conduct this transfer, I had to:
+1. Make sure I am running CMD in administrative mode.
+2. To use mysqldump, I should be in the folder, C:\Program Files\MySQL\MySQL Server 8.0\bin>
+3. To backup the database, I needed to use the attrebute -P (capital case) to indentify the port. The final format of the command was like this.
+```mysqldump -P 3300 -u root -p***************** htm > htmbackup.sql```
+4. Before deploing the database from the backup to Azure, I needed to make a database on Azure. I needed the name of the database to include in the command. The name of the database on Azure is htm_dev.
+At the end, the final format of the command that is used to transfer the database to Azure was like this.
+```mysql -h htmmysqlserver.mysql.database.azure.com -u [username] -p[***password****] htm_dev < htmbackup.sql```
