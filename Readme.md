@@ -90,7 +90,29 @@ The database is transferred to Azure. I used Azure mySQL service. The currnet da
 1. Make sure I am running CMD in administrative mode.
 2. To use mysqldump, I should be in the folder, C:\Program Files\MySQL\MySQL Server 8.0\bin>
 3. To backup the database, I needed to use the attrebute -P (capital case) to indentify the port. The final format of the command was like this.
-```mysqldump -P 3300 -u root -p***************** htm > htmbackup.sql```
+
+```
+mysqldump -P 3300 -u root -p***************** htm > htmbackup.sql
+```
+
 4. Before deploing the database from the backup to Azure, I needed to make a database on Azure. I needed the name of the database to include in the command. The name of the database on Azure is htm_dev.
 At the end, the final format of the command that is used to transfer the database to Azure was like this.
-```mysql -h htmmysqlserver.mysql.database.azure.com -u [username] -p[***password****] htm_dev < htmbackup.sql```
+
+```
+mysql -h htmmysqlserver.mysql.database.azure.com -u [username] -p[***password****] htm_dev < htmbackup.sql
+```
+
+5. The connection String in the appsettings.json should be updated.
+
+```
+"ConnectionString": {
+    "myDB1": "server=127.0.0.1;uid=root;pwd=****p assword****;database=HTM;port=3300",
+    "azure": "server=??????.mysql.database.azure.com;uid=**username**;pwd=***password*****;database=htm_dev;port=3306"
+```
+
+## 7 Deploy (migrate) the app MySQL database on Azure
+I followed this tutorial: https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-api-management-using-vs?view=aspnetcore-7.0
+Therefore, First step was to move ```app.UseSwagger();``` out of the if condition in program.cs.
+First I skipped changing ```[Route("[controller]")]``` to ```[Route("/")]``` cause I wanted to know what difference it can cause. It seems that it causes no problem.
+I published the app, according to the instruction that was given in the tutorial. The only hick up was the error massage regarding Swagger. at the end I noticed that I have to comment all of the lines that includes Swagger in program.cs. In this situation no error will be shown on publish.
+After successful publish the app was tested. All works, I can get the results from the API. I only need to copy the "Default domain" from the web app ()
