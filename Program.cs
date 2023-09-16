@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //using var db = new BloggingContext();
 using var db = new HTMbackend.HTM.HtmContext();
+//db.Database.EnsureCreated();
 
 
 // Add services to the container.

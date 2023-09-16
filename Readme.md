@@ -115,4 +115,18 @@ I followed this tutorial: https://learn.microsoft.com/en-us/aspnet/core/tutorial
 Therefore, First step was to move ```app.UseSwagger();``` out of the if condition in program.cs.
 First I skipped changing ```[Route("[controller]")]``` to ```[Route("/")]``` cause I wanted to know what difference it can cause. It seems that it causes no problem.
 I published the app, according to the instruction that was given in the tutorial. The only hick up was the error massage regarding Swagger. at the end I noticed that I have to comment all of the lines that includes Swagger in program.cs. In this situation no error will be shown on publish.
-After successful publish the app was tested. All works, I can get the results from the API. I only need to copy the "Default domain" from the web app ()
+After successful publish the app was tested. All works, I can get the results from the API. I only need to copy the "Default domain" from the web app (```****webAppServiceName****.azurewebsites.net```) and add for example ```/api/risks``` to get the data.
+The only issue at the current publish is that the API is not authenticated. Anyone can access the API. I need to secure it.
+
+## Microsoft is expensive for an unprofessional developer
+### Database
+When I transferred my database and backend to Azure, I believed I am on the first year free account plan, but soon I saw I am being charged. It turned out that earlier I was registered as a user on Microsoft. Azure free first year offer is only for new users.
+So I had to find a new hosting service. Heruko has stopped offering free MySQL server but freemysqlhosting.net kindly offers free mysql hosting. There I made a new database. To make the tables, I first added 
+
+```db.Database.EnsureCreated();```
+
+to ```program.cs```. I also used the command ```dotnet ef database update``` a couple of time. It seems that ```EnsureCreated()``` was throwing an error and I had to comment that line. but then it seems that, SOMEHOW, after turning that line to comment, and runnign the app again, the tables were made in the new database.
+### Backend
+For ASP.NET backened, I used https://freeasphosting.net/. I just learned that they offer free database hosting too! I had to right click on the project, choose "publish" and choose folder as publish profile. then the conetet of that folder should be zipped and uploaded on the hosting website and unzipped. Just this!
+
+So now I have my database and backend hosted for feee. Go F*** your self Microsoft. I am angry at Microsoft because I did not truely ever got the chance to use Azure free 12 months. But I understand Microsoft trying to closing the possebility of abusing their system. 
