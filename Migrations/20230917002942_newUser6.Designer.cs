@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HTMbackend.Migrations
 {
     [DbContext(typeof(HtmContext))]
-    [Migration("20230916144230_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230917002942_newUser6")]
+    partial class newUser6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,25 @@ namespace HTMbackend.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("HTMbackend.HTM.Organization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("organization", (string)null);
+                });
 
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>
                 {
@@ -188,6 +207,48 @@ namespace HTMbackend.Migrations
                     b.ToTable("risk", (string)null);
                 });
 
+            modelBuilder.Entity("HTMbackend.HTM.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int")
+                        .HasColumnName("OrganizationId");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "FirstName" }, "FirstName");
+
+                    b.HasIndex(new[] { "LastName" }, "LastName");
+
+                    b.HasIndex(new[] { "OrganizationId" }, "OrganizationId");
+
+                    b.HasIndex(new[] { "Password" }, "Password");
+
+                    b.HasIndex(new[] { "Username" }, "Username");
+
+                    b.ToTable("user", (string)null);
+                });
+
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>
                 {
                     b.HasOne("HTMbackend.HTM.Rcmtype", "RcmtypeNavigation")
@@ -214,6 +275,23 @@ namespace HTMbackend.Migrations
                     b.Navigation("Rcm");
 
                     b.Navigation("Risk");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.User", b =>
+                {
+                    b.HasOne("HTMbackend.HTM.Organization", "Organization")
+                        .WithMany("Users")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("user_ibfk_1");
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.Organization", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>

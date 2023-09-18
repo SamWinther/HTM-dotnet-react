@@ -126,7 +126,20 @@ So I had to find a new hosting service. Heruko has stopped offering free MySQL s
 ```db.Database.EnsureCreated();```
 
 to ```program.cs```. I also used the command ```dotnet ef database update``` a couple of time. It seems that ```EnsureCreated()``` was throwing an error and I had to comment that line. but then it seems that, SOMEHOW, after turning that line to comment, and runnign the app again, the tables were made in the new database.
+
+Later I added two new tables, ```user``` and ```organization```. I had to also update HtmContext.cs file and register these two tables ther too, otherwise they only be known as class. 
+To update the database based on the code in asp.net, I should first run "dotnet ef migrations add <theName>". this command makes a migration file with DateTime stamp + <theName>. (Remember that you need to delete this file after your migration is done.) Then I had to run the command ```dotnet ef database update```. This will create the new tables in the database.
+
 ### Backend
 For ASP.NET backened, I used https://freeasphosting.net/. I just learned that they offer free database hosting too! I had to right click on the project, choose "publish" and choose folder as publish profile. then the conetet of that folder should be zipped and uploaded on the hosting website and unzipped. Just this!
 
 So now I have my database and backend hosted for feee. Go F*** your self Microsoft. I am angry at Microsoft because I did not truely ever got the chance to use Azure free 12 months. But I understand Microsoft trying to closing the possebility of abusing their system. 
+
+## 8.Authentication
+To implement authentication, two tables user and organization is implemented. also a procedure is added to MySQL server,
+```
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_Register`(IN iFirstName char(100), IN iLastName char(100), IN iPassword char(100), IN iOrganizationId int, IN iUsername char(100))
+BEGIN
+	INSERT INTO user (FirstName, LastName, Password, OrganizationId, Username) values (iFirstName, iLastName, iPassword, iOrganizationId, iUsername);
+END
+```
