@@ -143,3 +143,31 @@ BEGIN
 	INSERT INTO user (FirstName, LastName, Password, OrganizationId, Username) values (iFirstName, iLastName, iPassword, iOrganizationId, iUsername);
 END
 ```
+
+###Update1:
+It turned out that I do not need to make these tables here in my app. Using Azure AD B2C, it take care of all of the user credentioals. So far, I have follwed this tutorial (to section 2.5) and have added both my backend and front end to the AD tenent on Azure.
+https://learn.microsoft.com/en-us/azure/active-directory-b2c/configure-authentication-sample-react-spa-app
+Currently, the user will be redirected to the page ```api/Register``` of my bacakend after the authentication. The scopes are defined, Read, Write, and Export. The problem at the moment is that I cannot read the authorization token from the get request header. It is most likely because the header is not there.
+I just printed all of the header contents and now I am sure there is nothing in the header with the key "Authorization". The get request is sent to the server in the form of 
+```
+// https://localhost:7085/api/Register?code=eyJraW....
+```
+I suspect that the token is hiden in that!
+
+### Update2:
+I finally decided to write my authentication by myself to avoid all of the complication that is followed by Active Directory. So, now I am using these tables: User, Organization and Roles. The user credentioals must be sent to the server in the header of the get request. To have a Get request that includes header, I faced a problem.
+The Dotnet server was sending CORS error while header was included in the Get request. So I had to add the following lines to Program.cs file.
+
+```
+app.addcors()  //line 18
+```
+and in line 26 to 30 I added these commands.
+```
+(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
+
+```
+I learned this solution from this page: https://jasonwatmore.com/post/2020/05/20/aspnet-core-api-allow-cors-requests-from-any-origin-and-with-credentials 

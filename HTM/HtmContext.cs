@@ -35,6 +35,7 @@ public partial class HtmContext : DbContext
 
     public virtual DbSet<Risk> Risks { get; set; }
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<Organization> Organizations { get; set; }
 
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -154,13 +155,22 @@ public partial class HtmContext : DbContext
 
             entity.HasIndex(e => e.Password, "Password");
 
+            entity.HasIndex(e => e.RoleId, "RoleId");
+
             entity.HasIndex(e => e.OrganizationId, "OrganizationId");
 
             entity.Property(e => e.OrganizationId).HasColumnName("OrganizationId");
+
+            entity.Property(e => e.RoleId).HasColumnName("RoleId");
             
             entity.HasOne(d => d.Organization).WithMany(p => p.Users)
                 .HasForeignKey(d => d.OrganizationId)
                 .HasConstraintName("user_ibfk_1");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("user_ibfk_2");
+
 
         });
 
@@ -169,6 +179,18 @@ public partial class HtmContext : DbContext
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable("organization");
+
+            entity.Property(e => e.Id).HasColumnName("Id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .HasColumnName("Name");
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("role");
 
             entity.Property(e => e.Id).HasColumnName("Id");
             entity.Property(e => e.Name)

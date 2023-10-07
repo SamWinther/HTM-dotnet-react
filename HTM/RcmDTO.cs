@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace HTMbackend.HTM;
 
-enum YesNo {Yes , No}
-
 public partial class RcmDTO
 {
     public string? Rcmtype { get; set; }

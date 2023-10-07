@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 using HTMbackend;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,28 +14,24 @@ using var db = new HTMbackend.HTM.HtmContext();
 // Add services to the container.
 builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>();
 
-//services.AddScoped<IBloggerRepository, BloggerRepository>;
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddAuthentication();
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
-//app.UseSwagger();
-
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwaggerUI();
-//}
-
-app.UseHttpsRedirection();
+app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
 app.UseAuthorization();
+app.UseHttpsRedirection();
+
 
 app.MapControllers();
-
 app.Run();

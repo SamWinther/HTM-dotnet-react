@@ -204,6 +204,25 @@ namespace HTMbackend.Migrations
                     b.ToTable("risk", (string)null);
                 });
 
+            modelBuilder.Entity("HTMbackend.HTM.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("role", (string)null);
+                });
+
             modelBuilder.Entity("HTMbackend.HTM.User", b =>
                 {
                     b.Property<int>("Id")
@@ -226,6 +245,10 @@ namespace HTMbackend.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -240,6 +263,8 @@ namespace HTMbackend.Migrations
                     b.HasIndex(new[] { "OrganizationId" }, "OrganizationId");
 
                     b.HasIndex(new[] { "Password" }, "Password");
+
+                    b.HasIndex(new[] { "RoleId" }, "RoleId");
 
                     b.HasIndex(new[] { "Username" }, "Username");
 
@@ -283,7 +308,16 @@ namespace HTMbackend.Migrations
                         .IsRequired()
                         .HasConstraintName("user_ibfk_1");
 
+                    b.HasOne("HTMbackend.HTM.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("user_ibfk_2");
+
                     b.Navigation("Organization");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("HTMbackend.HTM.Organization", b =>
@@ -304,6 +338,11 @@ namespace HTMbackend.Migrations
             modelBuilder.Entity("HTMbackend.HTM.Risk", b =>
                 {
                     b.Navigation("Rcm2risks");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
