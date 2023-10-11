@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HTMbackend.HTM;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HTMbackend.Controllers
 {
@@ -22,6 +23,7 @@ namespace HTMbackend.Controllers
 
         // GET: api/Risks
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Risk>>> GetRisks()
         //public async Task<ActionResult<Risk>> GetRisk(int id)
         {

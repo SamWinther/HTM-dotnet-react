@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using HTMbackend;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,31 @@ builder.Services.AddScoped<HTMbackend.HTM.HtmContext, HTMbackend.HTM.HtmContext>
 
 builder.Services.AddCors();
 builder.Services.AddControllers();
-builder.Services.AddAuthentication();
+//builder.Services.AddAuthentication();
+//JWT added code start
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
+// Add configuration from appsettings.json
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+//JWT added code end
 builder.Services.AddEndpointsApiExplorer();
 
 
@@ -28,8 +53,16 @@ app.UseCors(x => x
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()); // allow credentials
+app.UseAuthentication();
 
+
+//JWT Added start
 app.UseAuthorization();
+IConfiguration configuration = app.Configuration;
+IWebHostEnvironment environment = app.Environment;
+//JWT Added end
+
+
 app.UseHttpsRedirection();
 
 
