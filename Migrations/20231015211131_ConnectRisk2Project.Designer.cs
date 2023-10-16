@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HTMbackend.Migrations
 {
     [DbContext(typeof(HtmContext))]
-    [Migration("20230930120030_HHTTMM")]
-    partial class HHTTMM
+    [Migration("20231015211131_ConnectRisk2Project")]
+    partial class ConnectRisk2Project
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,29 @@ namespace HTMbackend.Migrations
                     b.ToTable("organization", (string)null);
                 });
 
+            modelBuilder.Entity("HTMbackend.HTM.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "Name" }, "Name");
+
+                    b.HasIndex(new[] { "OrganizationId" }, "OrganizationId");
+
+                    b.ToTable("project", (string)null);
+                });
+
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>
                 {
                     b.Property<int>("Id")
@@ -57,6 +80,10 @@ namespace HTMbackend.Migrations
                     b.Property<bool>("NewRiskFromRcm")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("NewRiskFromRCM");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<string>("Rcmtext")
                         .IsRequired()
@@ -75,6 +102,8 @@ namespace HTMbackend.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "ProjectId" }, "ProjectId");
 
                     b.HasIndex(new[] { "Rcmtype" }, "RCMtype");
 
@@ -173,6 +202,10 @@ namespace HTMbackend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Prob_pre");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
+
                     b.Property<string>("RcmRational")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -203,6 +236,9 @@ namespace HTMbackend.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "ProjectId" }, "ProjectId")
+                        .HasDatabaseName("ProjectId1");
 
                     b.ToTable("risk", (string)null);
                 });
@@ -248,10 +284,6 @@ namespace HTMbackend.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int")
-                        .HasColumnName("RoleId");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -263,24 +295,79 @@ namespace HTMbackend.Migrations
 
                     b.HasIndex(new[] { "LastName" }, "LastName");
 
-                    b.HasIndex(new[] { "OrganizationId" }, "OrganizationId");
+                    b.HasIndex(new[] { "OrganizationId" }, "OrganizationId")
+                        .HasDatabaseName("OrganizationId1");
 
                     b.HasIndex(new[] { "Password" }, "Password");
-
-                    b.HasIndex(new[] { "RoleId" }, "RoleId");
 
                     b.HasIndex(new[] { "Username" }, "Username");
 
                     b.ToTable("user", (string)null);
                 });
 
+            modelBuilder.Entity("HTMbackend.HTM.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectID");
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("int")
+                        .HasColumnName("RoleID");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int")
+                        .HasColumnName("UserID");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "ProjectID" }, "ProjectID");
+
+                    b.HasIndex(new[] { "RoleID" }, "RoleID");
+
+                    b.HasIndex(new[] { "UserID" }, "UserID");
+
+                    b.ToTable("userRole", (string)null);
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.Project", b =>
+                {
+                    b.HasOne("HTMbackend.HTM.Organization", "Organization")
+                        .WithMany("Projects")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("Project_ibfk_1");
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>
                 {
+                    b.HasOne("HTMbackend.HTM.Project", "Project")
+                        .WithMany("Rcms")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("rcm_ibfk_2");
+
                     b.HasOne("HTMbackend.HTM.Rcmtype", "RcmtypeNavigation")
                         .WithMany("Rcms")
                         .HasForeignKey("Rcmtype")
                         .IsRequired()
                         .HasConstraintName("rcm_ibfk_1");
+
+                    b.Navigation("Project");
 
                     b.Navigation("RcmtypeNavigation");
                 });
@@ -302,6 +389,18 @@ namespace HTMbackend.Migrations
                     b.Navigation("Risk");
                 });
 
+            modelBuilder.Entity("HTMbackend.HTM.Risk", b =>
+                {
+                    b.HasOne("HTMbackend.HTM.Project", "Project")
+                        .WithMany("Risks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("risk_ibfk_1");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("HTMbackend.HTM.User", b =>
                 {
                     b.HasOne("HTMbackend.HTM.Organization", "Organization")
@@ -311,21 +410,53 @@ namespace HTMbackend.Migrations
                         .IsRequired()
                         .HasConstraintName("user_ibfk_1");
 
-                    b.HasOne("HTMbackend.HTM.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.UserRole", b =>
+                {
+                    b.HasOne("HTMbackend.HTM.Project", "Project")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("user_ibfk_2");
+                        .HasConstraintName("UserRole_ibfk_2");
 
-                    b.Navigation("Organization");
+                    b.HasOne("HTMbackend.HTM.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("UserRole_ibfk_3");
+
+                    b.HasOne("HTMbackend.HTM.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("UserRole_ibfk_1");
+
+                    b.Navigation("Project");
 
                     b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HTMbackend.HTM.Organization", b =>
                 {
+                    b.Navigation("Projects");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.Project", b =>
+                {
+                    b.Navigation("Rcms");
+
+                    b.Navigation("Risks");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("HTMbackend.HTM.Rcm", b =>
@@ -345,7 +476,12 @@ namespace HTMbackend.Migrations
 
             modelBuilder.Entity("HTMbackend.HTM.Role", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("HTMbackend.HTM.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

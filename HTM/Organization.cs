@@ -10,4 +10,6 @@ public partial class Organization
     public string Name{ get; set; } = null!;
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
+
+    public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 }

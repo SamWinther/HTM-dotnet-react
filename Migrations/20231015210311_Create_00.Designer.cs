@@ -3,6 +3,7 @@ using System;
 using HTMbackend.HTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HTMbackend.Migrations
 {
     [DbContext(typeof(HtmContext))]
-    partial class HtmContextModelSnapshot : ModelSnapshot
+    [Migration("20231015210311_Create_00")]
+    partial class Create_00
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,10 +202,6 @@ namespace HTMbackend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Prob_pre");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProjectId");
-
                     b.Property<string>("RcmRational")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -233,9 +232,6 @@ namespace HTMbackend.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
-
-                    b.HasIndex(new[] { "ProjectId" }, "ProjectId")
-                        .HasDatabaseName("ProjectId1");
 
                     b.ToTable("risk", (string)null);
                 });
@@ -386,18 +382,6 @@ namespace HTMbackend.Migrations
                     b.Navigation("Risk");
                 });
 
-            modelBuilder.Entity("HTMbackend.HTM.Risk", b =>
-                {
-                    b.HasOne("HTMbackend.HTM.Project", "Project")
-                        .WithMany("Risks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("risk_ibfk_1");
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("HTMbackend.HTM.User", b =>
                 {
                     b.HasOne("HTMbackend.HTM.Organization", "Organization")
@@ -450,8 +434,6 @@ namespace HTMbackend.Migrations
             modelBuilder.Entity("HTMbackend.HTM.Project", b =>
                 {
                     b.Navigation("Rcms");
-
-                    b.Navigation("Risks");
 
                     b.Navigation("UserRoles");
                 });

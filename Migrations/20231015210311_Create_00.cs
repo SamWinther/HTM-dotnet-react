@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace HTMbackend.Migrations
 {
     /// <inheritdoc />
-    public partial class HHTTMM : Migration
+    public partial class Create_00 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -84,25 +84,23 @@ namespace HTMbackend.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "rcm",
+                name: "project",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RCMtype = table.Column<int>(type: "int", nullable: false),
-                    RCMtext = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    NewRiskFromRCM = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    implement = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    VerOfEff = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => x.ID);
+                    table.PrimaryKey("PRIMARY", x => x.Id);
                     table.ForeignKey(
-                        name: "rcm_ibfk_1",
-                        column: x => x.RCMtype,
-                        principalTable: "rcmtype",
-                        principalColumn: "ID");
+                        name: "Project_ibfk_1",
+                        column: x => x.OrganizationId,
+                        principalTable: "organization",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -116,8 +114,7 @@ namespace HTMbackend.Migrations
                     LastName = table.Column<string>(type: "varchar(255)", nullable: false),
                     Username = table.Column<string>(type: "varchar(255)", nullable: false),
                     Password = table.Column<string>(type: "varchar(255)", nullable: false),
-                    OrganizationId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    OrganizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,9 +125,68 @@ namespace HTMbackend.Migrations
                         principalTable: "organization",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "rcm",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    RCMtype = table.Column<int>(type: "int", nullable: false),
+                    RCMtext = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    NewRiskFromRCM = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    implement = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    VerOfEff = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.ID);
                     table.ForeignKey(
-                        name: "user_ibfk_2",
-                        column: x => x.RoleId,
+                        name: "rcm_ibfk_1",
+                        column: x => x.RCMtype,
+                        principalTable: "rcmtype",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "rcm_ibfk_2",
+                        column: x => x.ProjectId,
+                        principalTable: "project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "userRole",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Comment = table.Column<string>(type: "longtext", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    ProjectID = table.Column<int>(type: "int", nullable: false),
+                    RoleID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.ID);
+                    table.ForeignKey(
+                        name: "UserRole_ibfk_1",
+                        column: x => x.UserID,
+                        principalTable: "user",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "UserRole_ibfk_2",
+                        column: x => x.ProjectID,
+                        principalTable: "project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "UserRole_ibfk_3",
+                        column: x => x.RoleID,
                         principalTable: "role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -163,6 +219,21 @@ namespace HTMbackend.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "Name",
+                table: "project",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "OrganizationId",
+                table: "project",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "ProjectId",
+                table: "rcm",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "RCMtype",
                 table: "rcm",
                 column: "RCMtype");
@@ -188,7 +259,7 @@ namespace HTMbackend.Migrations
                 column: "LastName");
 
             migrationBuilder.CreateIndex(
-                name: "OrganizationId",
+                name: "OrganizationId1",
                 table: "user",
                 column: "OrganizationId");
 
@@ -198,14 +269,24 @@ namespace HTMbackend.Migrations
                 column: "Password");
 
             migrationBuilder.CreateIndex(
-                name: "RoleId",
-                table: "user",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "Username",
                 table: "user",
                 column: "Username");
+
+            migrationBuilder.CreateIndex(
+                name: "ProjectID",
+                table: "userRole",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleID",
+                table: "userRole",
+                column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "UserID",
+                table: "userRole",
+                column: "UserID");
         }
 
         /// <inheritdoc />
@@ -215,7 +296,7 @@ namespace HTMbackend.Migrations
                 name: "rcm2risk");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "userRole");
 
             migrationBuilder.DropTable(
                 name: "rcm");
@@ -224,13 +305,19 @@ namespace HTMbackend.Migrations
                 name: "risk");
 
             migrationBuilder.DropTable(
-                name: "organization");
+                name: "user");
 
             migrationBuilder.DropTable(
                 name: "role");
 
             migrationBuilder.DropTable(
                 name: "rcmtype");
+
+            migrationBuilder.DropTable(
+                name: "project");
+
+            migrationBuilder.DropTable(
+                name: "organization");
         }
     }
 }

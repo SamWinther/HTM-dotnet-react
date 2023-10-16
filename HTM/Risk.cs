@@ -35,5 +35,8 @@ public partial class Risk
 
     public byte[]? Complete { get; set; }
 
+    public int ProjectId { get; set; }
+    public virtual Project? Project { get; set; }
+
     public virtual ICollection<Rcm2risk> Rcm2risks { get; set; } = new List<Rcm2risk>();
 }
