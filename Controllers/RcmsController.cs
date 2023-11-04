@@ -143,19 +143,20 @@ namespace HTMbackend.Controllers
             return NoContent();
         }
 
-        // GET: api/RCM/RCMwithType/5
-        //[HttpGet("/RCMwithType/{Id}")]
-        //public List<HTMbackend.HTM.Rcm> RiskWithRCMs(int riskId)
-        //{
-        //    var RCMwithType = _context.Rcms.Include(Rcm=> Rcm.RcmtypeNavigation).ToList();
+        //GET: api/RCM/RCMwithType/5
+        [HttpGet("/RCMwithType/{Id}")]
+        public List<HTMbackend.HTM.Rcm> RiskWithRCMs(int riskId)
+        {
+            var RCMwithType = _context.Rcms.Include(Rcm => Rcm.RcmtypeNavigation).ToList();
 
-        //    //if (RCMwithType == null)
-        //    //{
-        //    //    throw new Exception("this is riskFind error");
-        //    //}
+            //if (RCMwithType == null)
+            //{
+            //    throw new Exception("this is riskFind error");
+            //}
 
-        //    return RCMwithType;
-        //}
+            return RCMwithType;
+        }
+
         private bool RcmExists(int id)
         {
             return (_context.Rcms?.Any(e => e.Id == id)).GetValueOrDefault();

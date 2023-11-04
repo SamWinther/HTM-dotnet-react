@@ -176,3 +176,6 @@ I learned this solution from this page: https://jasonwatmore.com/post/2020/05/20
 This video very well described JWT. Now I know I need it. https://youtu.be/7Q17ubqLfaM?si. 
 Now I should follow this to implement the JWT: https://medium.com/bina-nusantara-it-division/implementing-jwt-in-asp-net-core-6-0-web-api-c-3a396fa8cfeb#:~:text=If%20you%20are%20using%20postman,NET%20Core%206.0%20Web%20API.
 Followed the page and I could implement the JWT authentication. Now ```API/risks``` is protected and to see the list of the risks, the get request header must have a field with the name ```Authorization``` and the value of ``` Bearer <token>````.
+
+## 9. More work around the model
+I added a new model ````Project``` and user, risk, RCMs, and organizations are connected to this entity.

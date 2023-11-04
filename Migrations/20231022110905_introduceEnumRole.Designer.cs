@@ -3,6 +3,7 @@ using System;
 using HTMbackend.HTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HTMbackend.Migrations
 {
     [DbContext(typeof(HtmContext))]
-    partial class HtmContextModelSnapshot : ModelSnapshot
+    [Migration("20231022110905_introduceEnumRole")]
+    partial class introduceEnumRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -313,18 +316,16 @@ namespace HTMbackend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("EnumRole")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("EnumRole")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProjectID")
                         .HasColumnType("int")
                         .HasColumnName("ProjectID");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<int>("RoleID")
+                        .HasColumnType("int")
+                        .HasColumnName("RoleID");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int")
@@ -333,11 +334,9 @@ namespace HTMbackend.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex(new[] { "EnumRole" }, "EnumRole");
-
                     b.HasIndex(new[] { "ProjectID" }, "ProjectID");
+
+                    b.HasIndex(new[] { "RoleID" }, "RoleID");
 
                     b.HasIndex(new[] { "UserID" }, "UserID");
 
@@ -428,7 +427,10 @@ namespace HTMbackend.Migrations
 
                     b.HasOne("HTMbackend.HTM.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("UserRole_ibfk_3");
 
                     b.HasOne("HTMbackend.HTM.User", "User")
                         .WithMany("UserRoles")

@@ -23,7 +23,6 @@ namespace HTMbackend.Controllers
 
         // GET: api/Risks
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Risk>>> GetRisks()
         //public async Task<ActionResult<Risk>> GetRisk(int id)
         {
@@ -57,7 +56,6 @@ namespace HTMbackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRisk(int id, Risk risk)
         {
-            Console.WriteLine("Hello from PUTTTTT");
             if (id != risk.Id)
             {
                 return BadRequest();

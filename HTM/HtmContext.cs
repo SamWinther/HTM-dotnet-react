@@ -37,11 +37,11 @@ public partial class HtmContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Project> Projects { get; set; }
     public virtual DbSet<UserRole> UserRoles{ get; set; }
-    public virtual DbSet<Role> Roles { get; set; }
+    //public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<Organization> Organizations { get; set; }
 
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySQL(_configuration.GetValue<string>("ConnectionString:local"));
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySQL(_configuration.GetValue<string>("ConnectionString:free"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -209,17 +209,17 @@ public partial class HtmContext : DbContext
                 .HasColumnName("Name");
         });
 
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+        //modelBuilder.Entity<Role>(entity =>
+        //{
+        //    entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("role");
+        //    entity.ToTable("role");
 
-            entity.Property(e => e.Id).HasColumnName("Id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .HasColumnName("Name");
-        });
+        //    entity.Property(e => e.Id).HasColumnName("Id");
+        //    entity.Property(e => e.Name)
+        //        .HasMaxLength(255)
+        //        .HasColumnName("Name");
+        //});
 
         modelBuilder.Entity<UserRole>(entity =>
         {
@@ -231,13 +231,13 @@ public partial class HtmContext : DbContext
 
             entity.HasIndex(e => e.ProjectID, "ProjectID");
 
-            entity.HasIndex(e => e.RoleID, "RoleID");
+            entity.HasIndex(e => e.EnumRole, "EnumRole");
 
             entity.Property(e => e.Id).HasColumnName("ID");
 
             entity.Property(e => e.UserID).HasColumnName("UserID");
             entity.Property(e => e.ProjectID).HasColumnName("ProjectID");
-            entity.Property(e => e.RoleID).HasColumnName("RoleID");
+            //entity.Property(e => e.RoleID).HasColumnName("RoleID");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.UserID)
@@ -247,9 +247,16 @@ public partial class HtmContext : DbContext
                 .HasForeignKey(d => d.ProjectID)
                 .HasConstraintName("UserRole_ibfk_2");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
-                .HasForeignKey(d => d.RoleID)
-                .HasConstraintName("UserRole_ibfk_3");
+            entity.Property(e => e.EnumRole)
+            .HasMaxLength(50)
+            .HasConversion(
+                v => v.ToString(),
+                v => (EnumRole)Enum.Parse(typeof(EnumRole), v))
+                .IsUnicode(false);
+
+            //entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+            //    .HasForeignKey(d => d.RoleID)
+            //    .HasConstraintName("UserRole_ibfk_3");
         });
 
         OnModelCreatingPartial(modelBuilder);
