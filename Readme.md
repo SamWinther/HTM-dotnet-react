@@ -179,3 +179,17 @@ Followed the page and I could implement the JWT authentication. Now ```API/risks
 
 ## 9. More work around the model
 I added a new model ````Project``` and user, risk, RCMs, and organizations are connected to this entity.
+
+## 10.Deploy to Heroku, using docker
+I had a problem with FreeAspHosting.net So I decided to find another free host. Apparantly using Docker, one can deploy the app on Heroku.
+I used this guide to make the docker image and deploy it on Heroku.
+https://faun.pub/deploy-dotnet-core-api-docker-container-with-mysql-on-heroku-ed387eab4222
+However, I had to change a couple of things.
+First line of the Dockerfile should be ```FROM mcr.microsoft.com/dotnet/sdk:6.0``` because I am using dotnet 6.
+The "D" in the name of the file ```Dockerfile``` must be capital.
+
+### 10.1 It did not work
+The turorial did not work. So I had to start Docker from the scratch. I am watching this to learn Docker A-Z
+```https://www.youtube.com/watch?v=pTFZFxd4hOI```
+
+First thing first, I had to turn on Hyper-V and Containers in Settings/Optional Features/More Windows Features.

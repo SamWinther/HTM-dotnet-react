@@ -55,7 +55,7 @@ namespace HTMbackend.Controllers
 
                         var jwtToken = GenerateToken(userinfo);
                         //string resp = "{\"explain\":\"Login successfull.\",\"token\":\""+ jwtToken+ "\",\"Project\":\""+userinfo.Roles[0].Project+"\"}";
-                        string loginSuccessfull = "\"explain\":\"Login successfull.\"";
+                        //string loginSuccessfull = "\"explain\":\"Login successfull.\"";
                         
                         string resp = "{\"explain\":\"Login successfull.\",\"token\":\""+ jwtToken+"\"}";
                         return (resp);

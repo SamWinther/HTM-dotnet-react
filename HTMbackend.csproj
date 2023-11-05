@@ -8,11 +8,6 @@
 
   <ItemGroup>
     <None Remove="Controllers\Rcm2riskController.cs.old" />
-    <None Remove="Dockerfile" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Dockerfile" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="out\" />
   </ItemGroup>
 
 </Project>
