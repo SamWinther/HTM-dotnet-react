@@ -6,26 +6,26 @@ namespace HTMbackend.HTM;
 
 public partial class HtmContext : DbContext
 {
-    protected readonly IConfiguration _configuration;
+    //protected readonly IConfiguration _configuration;
     public HtmContext()
     {
     }
-    public HtmContext(IConfiguration configuration) : this()
-    {
-        //Console.WriteLine("Second");
-        _configuration = configuration;
-    }
+    //public HtmContext(IConfiguration configuration) : this()
+    //{
+    //    //Console.WriteLine("Second");
+    //    _configuration = configuration;
+    //}
     public HtmContext(DbContextOptions<HtmContext> options)
         : base(options)
     {
     }
 
-    public HtmContext(DbContextOptions<HtmContext> options, IConfiguration configuration)
-        : this(options)
-    {
-        //Console.WriteLine("forth");
-        _configuration = configuration;
-    }
+    //public HtmContext(DbContextOptions<HtmContext> options, IConfiguration configuration)
+    //    : this(options)
+    //{
+    //    //Console.WriteLine("forth");
+    //    _configuration = configuration;
+    //}
 
     public virtual DbSet<Rcm> Rcms { get; set; }
 

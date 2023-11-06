@@ -193,7 +193,7 @@ The turorial did not work. So I had to start Docker from the scratch. I am watch
 ```https://www.youtube.com/watch?v=pTFZFxd4hOI```
 
 First thing first, I had to turn on Hyper-V and Containers in Settings/Optional Features/More Windows Features.
-Second, in this video, Mosh says that after you enter ````docker version``` you must make sure the server is running. I faced a problem cause I saw the server is not running.So I had to run the app "Docker Desktop" and then re-execute the command and it worked.
+Second, in this video, Mosh says that after you enter ```docker version``` you must make sure the server is running. I faced a problem cause I saw the server is not running.So I had to run the app "Docker Desktop" and then re-execute the command and it worked.
 Third, in this video, Mosh gives an introducation to Linux and how to run it on Docker. Here is a brief cheat sheet.
 ```whoami```: tells you the current user
 ```history```: presents a history of commands that are executed.
