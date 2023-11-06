@@ -23,6 +23,11 @@ namespace HTMbackend.Controllers
         private readonly HtmContext _context;
         //private readonly IConfiguration _configuration;
 
+        public AuthenticationController(HtmContext context)
+        {
+            _context = context;
+        }
+
         //public AuthenticationController(HtmContext context, IConfiguration configuration)
         //{
         //    _context = context;
