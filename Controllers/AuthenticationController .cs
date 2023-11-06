@@ -21,13 +21,13 @@ namespace HTMbackend.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly HtmContext _context;
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
-        public AuthenticationController(HtmContext context, IConfiguration configuration)
-        {
-            _context = context;
-            _configuration = configuration;
-        }
+        //public AuthenticationController(HtmContext context, IConfiguration configuration)
+        //{
+        //    _context = context;
+        //    _configuration = configuration;
+        //}
 
         // GET: api/authentication/username
         [HttpGet]

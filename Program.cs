@@ -40,8 +40,8 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 // Add configuration from appsettings.json
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
+//builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+//    .AddEnvironmentVariables();
 //JWT added code end
 builder.Services.AddEndpointsApiExplorer();
 
