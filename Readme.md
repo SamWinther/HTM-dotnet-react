@@ -193,3 +193,33 @@ The turorial did not work. So I had to start Docker from the scratch. I am watch
 ```https://www.youtube.com/watch?v=pTFZFxd4hOI```
 
 First thing first, I had to turn on Hyper-V and Containers in Settings/Optional Features/More Windows Features.
+Second, in this video, Mosh says that after you enter ````docker version``` you must make sure the server is running. I faced a problem cause I saw the server is not running.So I had to run the app "Docker Desktop" and then re-execute the command and it worked.
+Third, in this video, Mosh gives an introducation to Linux and how to run it on Docker. Here is a brief cheat sheet.
+```whoami```: tells you the current user
+```history```: presents a history of commands that are executed.
+```echo```: works like console.log. print the text that follows the echo. The text must be in between "".
+```apt```: is a package manager, like npm for node.
+```apt update```: must be executed before each install, it will update the list of the apps that are on the apt. For example, if you just run ```apt install nano```, it wont work because your machine does not know there is a package named "nano". so first update and then install.
+```apt list```: shows the list of the packages that are on the apt, whether they are installed or not.
+```apt install <package>```: installs a package.
+```apt remove <package>```: uninstalls a package.
+```pwd```: print work-in directory
+```ls```: show the list of the contents in the current directory. it is similar to dir for cmd.
+```ls -1```: show the list of the contents in the current directory. One item in each line.
+```ls -l```: show the list of the contents in the current directory. long listing.
+```cd ~```: Go to the home directory of the current user.
+```mkdir <name>```: Make a directory with the identified name.
+```mv```: move or rename a file or directory.
+```touch <file.ext>```: Make a file with the spacified name and extension.
+```rm <file.ext>```: remove a file.
+```rm -r <file.ext>```: remove a directory and all of its contents.
+```cat <file.ext>```: concatinate a file. Useful for showing the contents of a file, if it is a small/short file.
+```more <file.ext>```: show the content of a file page by page (Space/Blank) or line by line (Enter). just going down in the file
+```less <file.ext>```: show the content of a file. Can go down or up. (not installed by default. Must be installed first byt apt)
+```head -n <x> <file.ext>```: show the first x lines of a file.
+```tail -n <x> <file.ext>```: show the last x lines of a file.
+
+Mosh tutorial ends here and I still do not know how to include the appsettings.json in my docker image. So I have to look at another video.
+I noticed that a prerequisite of docker is to activate WSL 2. So in installed wsl by ```wsl --install``` and set the default wsl to 2 by ```wsl --set-default-version 2```
+
+
