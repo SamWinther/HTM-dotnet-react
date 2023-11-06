@@ -88,9 +88,9 @@ namespace HTMbackend.Controllers
             
 
             //start to generate the JWT Token
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var issuer = Environment.GetEnvironmentVariable("JwtIssuer");
+            var audience = Environment.GetEnvironmentVariable("JwtAudience");
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey"));
 
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
