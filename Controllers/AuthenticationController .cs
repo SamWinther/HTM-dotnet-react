@@ -90,12 +90,27 @@ namespace HTMbackend.Controllers
         private string GenerateToken(UserWithRoles user)
         {
             Console.WriteLine("GenerateToken start");
-            
+
 
             //start to generate the JWT Token
-            var issuer = Environment.GetEnvironmentVariable("JwtIssuer");
-            var audience = Environment.GetEnvironmentVariable("JwtAudience");
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey"));
+            //In the old version, locally configs were in appsettings.json and it made a big problem on each deploy. I had to change lines because
+            //the cloud servers use Environment variables. So I had to use Env. Variables on my local setup too. These lines are from old days to comply
+            //with cloud
+            //From here
+            //var issuer = Environment.GetEnvironmentVariable("JwtIssuer");
+            //var audience = Environment.GetEnvironmentVariable("JwtAudience");
+            //var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey"));
+            //Up to here
+
+
+
+            //Now in local setup I am using Env. Variables too.
+            //var issuer = _configuration["Jwt:Issuer"];    //if the values must be read from appsettings.json
+            var issuer = Environment.GetEnvironmentVariable("ASPNETCORE_JwtIssuer");
+            //var audience = _configuration["Jwt:Audience"];    //if the values must be read from appsettings.json
+            var audience = Environment.GetEnvironmentVariable("ASPNETCORE_JwtAudience");
+            //var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);    //if the values must be read from appsettings.json
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ASPNETCORE_JwtKey"));
 
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
@@ -152,9 +167,19 @@ namespace HTMbackend.Controllers
             foreach (var role in thisUserRoles)
             {
                 ProjectRole sampleRole = new ProjectRole();
-                sampleRole.Project = role.Project.Name;
+                if(role.EnumRole == (EnumRole)6)
+                {
+                    sampleRole.Project = "SuperUser";
+                }
+                else if(role.EnumRole == (EnumRole)4)
+                {
+                    sampleRole.Project = "Admin";
+                } else
+                {
+                    sampleRole.Project = role.Project.Name;
+                }
                 sampleRole.Role = role.EnumRole.ToString();
-                sampleRole.Projectid = role.Project.Id;
+                sampleRole.Projectid = role.ProjectID;
 
                 userInfo.Roles.Add(sampleRole);
             }

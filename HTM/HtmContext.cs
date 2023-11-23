@@ -36,12 +36,31 @@ public partial class HtmContext : DbContext
     public virtual DbSet<Risk> Risks { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Project> Projects { get; set; }
-    public virtual DbSet<UserRole> UserRoles{ get; set; }
+    public virtual DbSet<UserRole> UserRoles { get; set; }
     //public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<Organization> Organizations { get; set; }
 
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySQL(Environment.GetEnvironmentVariable("ConnectionStringfree"));
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySQL(_configuration.GetValue<string>("ConnectionString:free"));
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySQL(MakeConnectionString());
+
+    public string MakeConnectionString()
+    {
+        string connectionStringServer = Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStringserver");
+        string ConnectionStringUID = Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStringUID");
+        string ConnectionStringPWD = Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStringPWD");
+        string ConnectionStringPort = Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStringPort");
+        string ConnectionStringDatabase = Environment.GetEnvironmentVariable("ASPNETCORE_ConnectionStringDatabase");
+
+        string ConnectionString = "server=" + connectionStringServer;
+        ConnectionString = ConnectionString + ";uid=" + ConnectionStringUID;
+        ConnectionString = ConnectionString +";pwd="+ConnectionStringPWD;
+        ConnectionString = ConnectionString +";database="+ ConnectionStringDatabase;
+        ConnectionString = ConnectionString +";port="+ ConnectionStringPort;
+        return ConnectionString;
+    }
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

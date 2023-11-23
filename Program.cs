@@ -29,9 +29,24 @@ builder.Services.AddAuthentication(options =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
-        ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey"))),
+        //In the old version, locally configs were in appsettings.json and it made a big problem on each deploy. I had to change lines because
+        //the cloud servers use Environment variables. So I had to use Env. Variables on my local setup too. These lines are from old days to comply
+        //with cloud
+        //From here
+        //ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
+        //ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
+        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtKey"))),
+        //Up to here
+
+
+        //Now in local setup I am using Env. Variables too.
+        //ValidIssuer = builder.Configuration["Jwt:Issuer"],    //Use these lines if the config parameters must be read from appsettings.json
+        ValidIssuer = Environment.GetEnvironmentVariable("ASPNETCORE_JwtIssuer"),
+        //ValidAudience = builder.Configuration["Jwt:Audience"],    //Use these lines if the config parameters must be read from appsettings.json
+        ValidAudience = builder.Configuration[Environment.GetEnvironmentVariable("ASPNETCORE_JwtAudience")],
+        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),    //Use these lines if the config parameters must be read from appsettings.json
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ASPNETCORE_JwtKey"))),
+
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = false,

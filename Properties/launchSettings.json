@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -11,13 +11,21 @@
   "profiles": {
     "HTMbackend": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "API/risks",
-      "applicationUrl": "https://localhost:7085;http://localhost:5082",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ConnectionStringPWD": "XXXXXXXXXXXXXXXXXXXX",
+        "ASPNETCORE_ConnectionStringserver": "XXXXXXXXXXXXXXXXX",
+        "ASPNETCORE_JwtAudience": "Audience",
+        "ASPNETCORE_JwtKey": "XXXXXXXXXXXXXXXXXXXXXX",
+        "ASPNETCORE_ConnectionStringDatabase": "XXXXXXXXXXXX",
+        "ASPNETCORE_ConnectionStringPort": "3306",
+        "ASPNETCORE_JwtIssuer": "Issuer",
+        "ASPNETCORE_ConnectionStringUID": "XXXXXXXXXXXXXXXXXX"
+      },
+      "applicationUrl": "https://localhost:7085;http://localhost:5082",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",
