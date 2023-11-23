@@ -29,9 +29,12 @@ builder.Services.AddAuthentication(options =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        //ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidIssuer = builder.Configuration["ASPNETCORE_JwtIssuer"],
+        //ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidAudience = builder.Configuration[Environment.GetEnvironmentVariable("ASPNETCORE_JwtAudience")],
+        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ASPNETCORE_JwtKey"))),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = false,

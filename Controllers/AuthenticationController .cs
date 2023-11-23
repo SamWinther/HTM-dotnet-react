@@ -88,9 +88,13 @@ namespace HTMbackend.Controllers
             
 
             //start to generate the JWT Token
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+            //var issuer = _configuration["Jwt:Issuer"];    //if the values must be read from appsettings.json
+            var issuer = Environment.GetEnvironmentVariable("ASPNETCORE_JwtIssuer");
+            //var audience = _configuration["Jwt:Audience"];    //if the values must be read from appsettings.json
+            var audience = Environment.GetEnvironmentVariable("ASPNETCORE_JwtAudience");
+            //var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);    //if the values must be read from appsettings.json
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ASPNETCORE_JwtKey"));
 
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
@@ -147,9 +151,19 @@ namespace HTMbackend.Controllers
             foreach (var role in thisUserRoles)
             {
                 ProjectRole sampleRole = new ProjectRole();
-                sampleRole.Project = role.Project.Name;
+                if(role.EnumRole == (EnumRole)6)
+                {
+                    sampleRole.Project = "SuperUser";
+                }
+                else if(role.EnumRole == (EnumRole)4)
+                {
+                    sampleRole.Project = "Admin";
+                } else
+                {
+                    sampleRole.Project = role.Project.Name;
+                }
                 sampleRole.Role = role.EnumRole.ToString();
-                sampleRole.Projectid = role.Project.Id;
+                sampleRole.Projectid = role.ProjectID;
 
                 userInfo.Roles.Add(sampleRole);
             }
