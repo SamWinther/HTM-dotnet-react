@@ -167,11 +167,11 @@ namespace HTMbackend.Controllers
             foreach (var role in thisUserRoles)
             {
                 ProjectRole sampleRole = new ProjectRole();
-                if(role.EnumRole == (EnumRole)6)
+                if(role.EnumRole == (EnumRole)6)        //If the user is SuperUser
                 {
                     sampleRole.Project = "SuperUser";
                 }
-                else if(role.EnumRole == (EnumRole)4)
+                else if(role.EnumRole == (EnumRole)1)   //If the user is admin
                 {
                     sampleRole.Project = "Admin";
                 } else

@@ -38,7 +38,8 @@ namespace HTMbackend.Controllers
 
         }
 
-        // GET: api/Rcms
+        // GET: api/Rcms/linq
+        //A test to have RCM table inner join with rcmtype table and return only some of the results and not all of the columns.
         [HttpGet("linq")]
         public IQueryable<RcmDTO> GetRcms_linq()
         //public List<RcmDTO> GetRcms_linq()
